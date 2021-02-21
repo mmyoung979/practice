@@ -39,6 +39,9 @@ def build_order(projects, dependencies):
     # Variable to return
     results = []
 
+    # Check if we're caught in circular dependencies
+    cycle = False
+
     # Instantiate Project objects into a dictionary
     projects_dict = {}
     for project in projects:
@@ -54,7 +57,8 @@ def build_order(projects, dependencies):
 
     # Add projects without dependencies to build order and then
     # remove that project as a dependency from its dependents
-    while len(projects_dict) > 0:
+    while len(projects_dict) > 0 and not cycle:
+        cycle = True
         for project in projects_dict.values():
             if project.seen is False and len(project.dependencies) == 0:
                 project.seen = True
@@ -66,6 +70,11 @@ def build_order(projects, dependencies):
                     to_remove = dependent.dependencies
                     for item in to_remove:
                         dependent.dependencies.remove(item)
+
+                cycle = False
+
+        if cycle:
+            return ValueError("ValueError: Input contains circular dependencies")
 
         # Remove tracked projects from dictionary
         for result in results:
@@ -98,3 +107,8 @@ dependencies = [
 ]
 results = build_order(projects, dependencies)
 assert results == ["d", "f", "g", "b", "c", "h", "a", "e"]
+
+projects = ["a", "b"]
+dependencies = [("a", "b"), ("b", "a")]
+results = build_order(projects, dependencies)
+assert isinstance(results, ValueError)
