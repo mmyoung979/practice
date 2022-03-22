@@ -15,7 +15,7 @@ class HashTable:
         return repr(self.array)
 
     def __len__(self):
-        return len(self.array)
+        return self.length
 
     def __iter__(self):
         return iter(self.array)
@@ -107,7 +107,7 @@ class TestHashTable(unittest.TestCase):
         start = 1
         end = 100
 
-        assert len(hash_table) == 4
+        assert len(hash_table.array) == 4
 
         # Initial [key, value] pairs
         for x in range(start, end):
@@ -117,7 +117,7 @@ class TestHashTable(unittest.TestCase):
             assert hash_table[f"key{x}"] == "value0"
 
         # Total available slots should have increased
-        assert len(hash_table) == self.get_adjust_len(end - start)
+        assert len(hash_table.array) == self.get_adjust_len(end - start)
 
         # Update [key, value] pairs
         for x in range(start, end):
@@ -139,11 +139,7 @@ class TestHashTable(unittest.TestCase):
         Returns:
             Expected length of HashTable array
         """
-        if n < 0:
-            raise ValueError("Range is negative.")
-        if (n & (n - 1) == 0) and n != 0:
-            return 4 * 2 ** log(n, 2)
-        return self.get_adjust_len(n - 1)
+        return 4 * 2 ** int(log(n, 2))
 
     def test_update(self):
         # HashTable object to test
@@ -165,7 +161,7 @@ class TestHashTable(unittest.TestCase):
         assert hash_table["key3"] == "value0"
         assert hash_table["key4"] == "value4"
         assert hash_table["key5"] == "value5"
-        assert len(hash_table) == self.get_adjust_len(5)
+        assert len(hash_table.array) == self.get_adjust_len(5)
 
 
 if __name__ == "__main__":
