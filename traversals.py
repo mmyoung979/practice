@@ -17,13 +17,13 @@ class Graph:
     def __init__(self):
         """
         Create graph
-            5 ----> 8 -> 9
-            |       |
-            v       v
+             5 ----> 8 -> 9
+             |       |
+             v       v
         2 <- 3 -> 4  6 -> 7
-            |       |
-            v       v
-            1 ---> 100
+             |       |
+             v       v
+             1 ---> 100
         """
         node1 = Node(1)
         node2 = Node(2)
