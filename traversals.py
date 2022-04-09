@@ -85,13 +85,23 @@ class Matrix:
         self.cols = len(self.matrix[0])
         self.visited = [[False] * self.cols for _ in range(self.rows)]
 
-    def dfs(self, row: int, col: int, result=[]) -> List[int]:
+    def skip(self, row: int, col: int) -> bool:
+        # Make sure row and col are within bounds
         if row >= self.rows or col >= self.cols or row < 0 or col < 0:
-            return
+            return True
 
+        # Make sure we don't look at the same location twice
         if self.visited[row][col]:
+            return True
+
+        return False
+
+    def dfs(self, row: int, col: int, result=[]) -> List[int]:
+        # Make sure row and col are within bounds
+        if self.skip(row, col):
             return
 
+        # Record that we have visited this cell
         result.append(self.matrix[row][col])
         self.visited[row][col] = True
 
@@ -107,17 +117,20 @@ class Matrix:
         result = []
         queue = [(row, col)]
         while queue:
+            # Look at first item in queue
             current_cell = queue.pop(0)
             row = current_cell[0]
             col = current_cell[1]
-            if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+
+            # Make sure row and col are within bounds
+            if self.skip(row, col):
                 continue
 
-            if self.visited[row][col]:
-                continue
-
+            # Record that we have visited this cell
             self.visited[row][col] = True
             result.append(self.matrix[row][col])
+
+            # Add up, right, down, left elements to queue
             queue.append((row - 1, col))
             queue.append((row, col + 1))
             queue.append((row + 1, col))
