@@ -107,7 +107,7 @@ class Matrix:
         result = []
         queue = [(row, col)]
         while queue:
-            current_cell = queue.pop()
+            current_cell = queue.pop(0)
             row = current_cell[0]
             col = current_cell[1]
             if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
@@ -141,7 +141,6 @@ class TestTraversal(unittest.TestCase):
 
     def test_matrix_bfs(self):
         matrix = Matrix()
-        print(matrix.bfs(0, 0))
         assert matrix.bfs(0, 0) == [1, 2, 4, 3, 5, 7, 6, 8, 9]
 
 
