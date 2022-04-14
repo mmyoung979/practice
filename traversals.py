@@ -148,6 +148,13 @@ class TestTraversal(unittest.TestCase):
         graph = Graph()
         assert graph.bfs(graph.head) == [5, 3, 8, 1, 2, 4, 6, 9, 100, 7]
 
+        # Test duplicate filtering
+        graph = Graph()
+        graph.duplicate_node = Node(11)
+        graph.head.add_child(graph.duplicate_node)
+        graph.head.add_child(graph.duplicate_node)
+        assert graph.bfs(graph.head) == [5, 3, 8, 11, 1, 2, 4, 6, 9, 100, 7]
+
     def test_matrix_dfs(self):
         matrix = Matrix()
         assert matrix.dfs(0, 0) == [1, 2, 3, 6, 9, 8, 5, 4, 7]
