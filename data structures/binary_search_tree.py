@@ -43,10 +43,13 @@ class BST:
         while current_node:
             if val == current_node.val:
                 if not current_node.left and not current_node.right:
-                    if val > parent_node.val:
-                        parent_node.right = None
+                    if parent_node:
+                        if val > parent_node.val:
+                            parent_node.right = None
+                        else:
+                            parent_node.left = None
                     else:
-                        parent_node.left = None
+                        self.root = None
                     return
                 elif current_node.left:
                     if parent_node:
@@ -147,6 +150,12 @@ class TestBST(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             bst.remove(10)
+
+        bst = BST()
+        bst.insert(Node(1))
+        bst.remove(1)
+        assert bst.root == None
+        assert bst.view() == []
 
     def test_view(self):
         bst = self.create_bst()
