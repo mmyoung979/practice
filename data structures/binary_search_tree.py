@@ -35,9 +35,6 @@ class BST:
                     return
 
     def remove(self, val: int) -> None:
-        if not self.search(val):
-            raise ValueError("Node not found")
-
         current_node = self.root
         parent_node = None
         while current_node:
@@ -78,6 +75,8 @@ class BST:
                 current_node = current_node.right
             else:
                 current_node = current_node.left
+
+        print(f"Node with value {val} not found")
 
     def search(self, val: int) -> bool:
         if not self.root:
@@ -147,9 +146,8 @@ class TestBST(unittest.TestCase):
         assert bst.view(in_order=True) == [3, 4, 5, 6, 7, 8]
         bst.remove(5)
         assert bst.view(in_order=True) == [3, 4, 6, 7, 8]
-
-        with self.assertRaises(ValueError):
-            bst.remove(10)
+        bst.remove(10)
+        assert bst.view(in_order=True) == [3, 4, 6, 7, 8]
 
         bst = BST()
         bst.insert(Node(1))
